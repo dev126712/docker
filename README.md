@@ -1,5 +1,7 @@
 # Docker
 
+![alt text](https://github.com/dev126712/docker/blob/e30147046e9a36266b6a482b739e0519dc8f4c6e/docker.jpg)
+
  Docker is an open-source containerization platform that allows developers to package applications and their dependencies into a standardized, isolated unit called a container. This ensures applications run consistently across any environment, from a developer's laptop to a cloud production server, solving the common "it works on my machine" problem.
 
  A Docker image is a read-only template that contains all the application code, libraries, dependencies, and configuration files required to run an application in a Docker container. It serves as a blueprint for creating isolated, consistent, and portable application environments.
