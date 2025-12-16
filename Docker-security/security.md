@@ -1,10 +1,19 @@
-# Image Building Best Practices
+# Image Building Security Practices
 Focus on creating secure, minimal container images from the start. 
 Use Minimal, Trusted Base Images: Start with official, verified images (e.g., alpine, distroless) to reduce the attack surface by avoiding unnecessary software and libraries.
+Good practice:
 ````
-FROM alpine:3.14
+FROM node:18.0.1-alpine
 ...
 ````
+Not good practice:
+````
+FROM ubuntu
+RUN apt-get update && apt-get install -y \
+    node \
+    rm -rf /var/lib/apt/lists/*
+````
+
 
 Run as a Non-Root User: By default, if not set a USER in your Dockerfile, the user will default to root, a major security risk. Create a dedicated non-root user within your Dockerfile using RUN command and switch to it using the USER instruction.
 
@@ -39,12 +48,6 @@ jobs:
           args: --severity-threshold=high
 ````
 
-Pin Image Versions: Avoid using mutable tags like :latest. Pin specific versions (e.g., FROM python:3.9-slim) or, for maximum integrity, use the image's SHA256 digest to ensure consistent builds. 
-
-````
-  IMAGE_TAG: express-api:${{ github.sha }}
-````
-
 # Daemon and Host Security
 
 Secure the underlying infrastructure running your containers. 
@@ -55,7 +58,7 @@ Do Not Expose the Docker Daemon Socket: Exposing the /var/run/docker.sock to con
 
 Enforce Access Controls: Use strict access controls (IAM, MFA, RBAC) for your registries and host systems to prevent unauthorized access and image tampering. 
 
-# Runtime Security
+Runtime Security
 Implement the principle of least privilege and monitor container activity. 
 Limit Container Privileges and Capabilities: Run containers with the minimum required permissions. Drop unnecessary Linux capabilities using the --cap-drop flag and avoid using the --privileged flag.
 Use a Read-Only Filesystem: Run containers with the --read-only flag to prevent attackers from modifying the filesystem, forcing logs and temporary files to be written to controlled volumes.
